@@ -43,10 +43,27 @@ boxplot(ieap2025$Weight
 
 # Make a scatter plot of Height vs Weight
 ```{r scatter-plot-height-weight}
-plot(ieap2025$Height, ieap2025$Weight
+      plot(ieap2025$Height, ieap2025$Weight
      , main = "Scatter plot of Height vs Weight"
      , xlab = "Height (cm)"
      , ylab = "Weight (kg)"
      , col = "purple"
-     , pch = 19
-     )
+     , pch = 19)
+```
+
+# Make a histogram of the Weight separating Males and Females
+
+```{r weight_by_gender_hist, echo=FALSE, results = TRUE}
+# Histogram of the weight distribution by gender
+library(ggplot2)
+
+ggplot(ieap2025, aes(x = Weight, fill = Gender)) +
+  geom_density(alpha = 0.5, adjust = 1.5) +
+  labs(title = "Weight Distribution by Gender",
+       x = "Weight (kg)",
+       y = "Density") +
+  theme_minimal() 
+
+
+```
+
