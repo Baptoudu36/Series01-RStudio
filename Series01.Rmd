@@ -1,0 +1,52 @@
+title: "Series01-RStudio"
+author: "Baptiste Augros"
+date: "`r format(Sys.time(), '%d %B, %Y, %H:%M')`"
+output:
+  html_document:
+    df_print: paged
+    code_folding: hide
+    toc: false
+    number_sections: true
+    ```{r load-data, message=FALSE, warning=FALSE}
+ieap2025 <- read.csv("data/IEAP-2025.csv")
+head(ieap2025)
+```
+# Load the data file 
+The data is from https://docs.google.com/spreadsheets/d/1AZvf5EuWStJ-gfY8z_AKUS2i5lRqNUyYWuTTx-pJe2Y/edit?gid=0#gid=0
+
+```{r}
+ieap2025 <- read.csv("data/IEAP-2025.csv")
+```
+
+# Make a histogram of the Weight of the students
+
+```{r histogram-of-weight}
+hist(ieap2025$Weight
+     , main = "Histogram of the Weightnof the students"
+     , xlab = "Weight (kg)"
+     , col = "lightblue"
+     , border = "black"
+     , breaks = 10
+     )
+```
+
+# Make a boxplot of the Weight of the students
+
+```{r boxplot-of-weight}
+boxplot(ieap2025$Weight
+        , main = "Boxplot of the Weight of the students"
+        , ylab = "Weight (kg)"
+        , col = "orange"
+        , border = "black"
+        )
+```
+
+# Make a scatter plot of Height vs Weight
+```{r scatter-plot-height-weight}
+plot(ieap2025$Height, ieap2025$Weight
+     , main = "Scatter plot of Height vs Weight"
+     , xlab = "Height (cm)"
+     , ylab = "Weight (kg)"
+     , col = "purple"
+     , pch = 19
+     )
