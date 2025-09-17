@@ -52,9 +52,23 @@ boxplot(ieap2025$Weight
 ```
 
 # Make a histogram of the Weight separating Males and Females
+```{r}
+# Histogram of weight distribution by gender
+
+ggplot(ieap2025, aes(x = Weight, fill = Gender)) +
+  geom_histogram(position = "identity", alpha = 0.6, bins = 20, color = "black") +
+  labs(title = "Histogram of Weight by Gender",
+       x = "Weight (kg)",
+       y = "Count") +
+  theme_minimal() +
+  scale_fill_manual(values = c("M" = "blue", "F" = "pink"))
+
+
+```
+
 
 ```{r weight_by_gender_hist, echo=FALSE, results = TRUE}
-# Histogram of the weight distribution by gender
+# Histogram of the density of weight distribution by gender
 library(ggplot2)
 
 ggplot(ieap2025, aes(x = Weight, fill = Gender)) +
