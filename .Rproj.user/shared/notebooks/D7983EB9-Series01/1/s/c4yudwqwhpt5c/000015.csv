@@ -1,0 +1,2 @@
+"0","ieap2025 <- read.csv(""data/DataIEAPStudents.csv"")"
+"0","head(ieap2025)"
