@@ -7,10 +7,11 @@ output:
     code_folding: hide
     toc: false
     number_sections: true
-    ```{r load-data, message=FALSE, warning=FALSE}
+```{r load-data, message=FALSE, warning=FALSE}
 ieap2025 <- read.csv("data/DataIEAPStudents.csv")
 head(ieap2025)
 ```
+
 # Load the data file 
 The data is from https://docs.google.com/spreadsheets/d/1AZvf5EuWStJ-gfY8z_AKUS2i5lRqNUyYWuTTx-pJe2Y/edit?gid=0#gid=0
 
@@ -24,7 +25,6 @@ hist(ieap2025$Weight,
      col = "lightblue",
      border = "black",
      breaks = 10)  # nombre de classes
-
 ```
 ```{r}
 # With ggplot2
@@ -36,8 +36,8 @@ ggplot(ieap2025, aes(x = Weight)) +
        x = "Weight (kg)",
        y = "Count") +
   theme_minimal()
-
 ```
+
 ```{r}
 # With R base
 ggplot(ieap2025, aes(x = Weight)) +
@@ -46,18 +46,17 @@ ggplot(ieap2025, aes(x = Weight)) +
        x = "Weight (kg)",
        y = "Density") +
   theme_minimal()
-
 ```
-```{r}
-# With ggplot2
+```{r weight_by_gender_hist, echo=FALSE, results = TRUE}
+# Histogram of the density of weight distribution by gender
+library(ggplot2)
+
 ggplot(ieap2025, aes(x = Weight, fill = Gender)) +
-  geom_density(alpha = 0.5) +
-  labs(title = "Density of Weight by Gender",
+  geom_density(alpha = 0.5, adjust = 1.5) +
+  labs(title = "Weight Distribution by Gender",
        x = "Weight (kg)",
        y = "Density") +
-  theme_minimal() +
-  scale_fill_manual(values = c("M" = "blue", "F" = "pink"))
-
+  theme_minimal() 
 ```
 ```{r}
 # With R base
@@ -66,7 +65,6 @@ boxplot(ieap2025$Weight,
         ylab = "Weight (kg)",
         col = "orange",
         border = "black")
-
 ```
 ```{r}
 # With ggplot2
@@ -75,29 +73,28 @@ ggplot(ieap2025, aes(y = Weight)) +
   labs(title = "Boxplot of Weight",
        y = "Weight (kg)") +
   theme_minimal()
-
 ```
-```{r}
-ggplot(ieap2025, aes(x = Gender, y = Weight, fill = Gender)) +
-  geom_boxplot() +
-  labs(title = "Boxplot of Weight by Gender",
-       x = "Gender",
-       y = "Weight (kg)") +
-  scale_fill_manual(values = c("M" = "blue", "F" = "pink")) +
-  theme_minimal()
+### 3.3 Boxplot to summarize the distribution
 
-```
+- **Main elements of a boxplot:**
+  - Median (Q2) → line inside the box
+  - First quartile (Q1, 25th percentile) → bottom edge of the box
+  - Third quartile (Q3, 75th percentile) → top edge of the box
+  - Interquartile range (IQR = Q3 − Q1) → spread of the middle 50% of data
+  - Whiskers → extend to smallest/largest values within 1.5 × IQR
+  - Outliers → points beyond the whiskers
 
-# Make a boxplot of the Weight of the students
+- **Why start with a boxplot for an unknown distribution:**
+  - Summarizes key statistics (median, quartiles, spread, extremes)
+  - Shows asymmetry or skewness in the data
+  - Detects potential outliers
+  - Compact summary suitable for small or large datasets
+  - Requires no assumptions about the distribution (robust for unknown distributions)
 
-```{r boxplot-of-weight}
-boxplot(ieap2025$Weight
-        , main = "Boxplot of the Weight of the students"
-        , ylab = "Weight (kg)"
-        , col = "orange"
-        , border = "black"
-        )
-```
+- **References for further reading:**
+  - [Boxplot – Wikipedia](https://en.wikipedia.org/wiki/Box_plot)
+  - [Understanding Boxplots – Towards Data Science](https://towardsdatascience.com/understanding-boxplots-5e2df7bcbd51)
+  - [R Boxplot Documentation](https://www.rdocumentation.org/packages/graphics/versions/3.6.2/topics/boxplot)
 
 # Make a scatter plot of Height vs Weight
 ```{r scatter-plot-height-weight}
@@ -108,7 +105,36 @@ boxplot(ieap2025$Weight
      , col = "purple"
      , pch = 19)
 ```
+# 4. Ask real questions as a scientist.
+```{r}
+library(ggplot2)
 
+ggplot(ieap2025, aes(x = Gender, y = Weight, fill = Gender)) +
+  geom_boxplot(alpha = 0.7) +
+  geom_jitter(width = 0.1, alpha = 0.5) +
+  labs(title = "Weight Distribution by Gender",
+       x = "Gender",
+       y = "Weight (kg)") +
+  scale_fill_manual(values = c("M" = "blue", "F" = "pink")) +
+  theme_minimal() 
+```
+# Explanations about the distribution :
+
+1️⃣ Male vs Female distribution comparison.
+
+ Males slightly heavier on average, but overall distributions are similar.
+
+2️⃣ Professional Graph
+
+Boxplot with individual points by gender: shows median, quartiles, outliers, and spread. Improve analysis (on my mind).
+Use distinct colors for more readability : blue for males and pink for females (quite stereotypics but easy to understand).
+
+3️⃣ Ideal Graph
+
+Fore me, a graph needs to be clear, readable and informative.
+A histogram can show overall shape, but is less precise for comparing groups.
+
+4️⃣ Let's try to plot an histogram and decide what is prefered !
 # Make a histogram of the Weight separating Males and Females
 ```{r}
 # Histogram of weight distribution by gender
@@ -120,22 +146,39 @@ ggplot(ieap2025, aes(x = Weight, fill = Gender)) +
        y = "Count") +
   theme_minimal() +
   scale_fill_manual(values = c("M" = "blue", "F" = "pink"))
-
-
 ```
+Works but boxplot is preferred for comparing male vs female distributions.
 
+# 4.1 Is the weight of males/females significantly different?
 
-```{r weight_by_gender_hist, echo=FALSE, results = TRUE}
-# Histogram of the density of weight distribution by gender
-library(ggplot2)
+```{r weight-comparison-21, message=FALSE, warning=FALSE}
+library(tidyverse)
 
-ggplot(ieap2025, aes(x = Weight, fill = Gender)) +
-  geom_density(alpha = 0.5, adjust = 1.5) +
+# Boxplot with points
+ggplot(ieap2025, aes(x = Gender, y = Weight, fill = Gender)) +
+  geom_boxplot(alpha = 0.7) +
+  geom_jitter(width = 0.1, alpha = 0.5) +
   labs(title = "Weight Distribution by Gender",
-       x = "Weight (kg)",
-       y = "Density") +
-  theme_minimal() 
+       x = "Gender",
+       y = "Weight (kg)") +
+  scale_fill_manual(values = c("M" = "blue", "F" = "pink")) +
+  theme_minimal()
 
+# t-test comparing male vs female weights
+t_test_result <- t.test(Weight ~ Gender, data = ieap2025)
+t_test_result
 
+# Calculate effect size (r) from t-test
+t_value <- t_test_result$statistic
+df <- t_test_result$parameter
+r <- sqrt(t_value^2 / (t_value^2 + df))
+
+# Automatic conclusion based on p-value
+if(t_test_result$p.value < 0.05){
+  cat("Conclusion: There is a statistically significant difference between male and female weights (p =", round(t_test_result$p.value,3), 
+      "), and the effect of gender is large (r =", round(r,2), ").\n")
+} else {
+  cat("Conclusion: There is no statistically significant difference between male and female weights (p =", round(t_test_result$p.value,3), ").\n")
+}
 ```
 
