@@ -98,6 +98,27 @@ boxplot(ieap2025$Weight
         , border = "black"
         )
 ```
+### 3.3 Boxplot to summarize the distribution
+
+- **Main elements of a boxplot:**
+  - Median (Q2) → line inside the box
+  - First quartile (Q1, 25th percentile) → bottom edge of the box
+  - Third quartile (Q3, 75th percentile) → top edge of the box
+  - Interquartile range (IQR = Q3 − Q1) → spread of the middle 50% of data
+  - Whiskers → extend to smallest/largest values within 1.5 × IQR
+  - Outliers → points beyond the whiskers
+
+- **Why start with a boxplot for an unknown distribution:**
+  - Summarizes key statistics (median, quartiles, spread, extremes)
+  - Shows asymmetry or skewness in the data
+  - Detects potential outliers
+  - Compact summary suitable for small or large datasets
+  - Requires no assumptions about the distribution (robust for unknown distributions)
+
+- **References for further reading:**
+  - [Boxplot – Wikipedia](https://en.wikipedia.org/wiki/Box_plot)
+  - [Understanding Boxplots – Towards Data Science](https://towardsdatascience.com/understanding-boxplots-5e2df7bcbd51)
+  - [R Boxplot Documentation](https://www.rdocumentation.org/packages/graphics/versions/3.6.2/topics/boxplot)
 
 # Make a scatter plot of Height vs Weight
 ```{r scatter-plot-height-weight}
