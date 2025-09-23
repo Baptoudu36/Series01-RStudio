@@ -8,26 +8,84 @@ output:
     toc: false
     number_sections: true
     ```{r load-data, message=FALSE, warning=FALSE}
-ieap2025 <- read.csv("data/IEAP-2025.csv")
+ieap2025 <- read.csv("data/DataIEAPStudents.csv")
 head(ieap2025)
 ```
 # Load the data file 
 The data is from https://docs.google.com/spreadsheets/d/1AZvf5EuWStJ-gfY8z_AKUS2i5lRqNUyYWuTTx-pJe2Y/edit?gid=0#gid=0
 
-```{r}
-ieap2025 <- read.csv("data/IEAP-2025.csv")
-```
-
 # Make a histogram of the Weight of the students
 
 ```{r histogram-of-weight}
-hist(ieap2025$Weight
-     , main = "Histogram of the Weightnof the students"
-     , xlab = "Weight (kg)"
-     , col = "lightblue"
-     , border = "black"
-     , breaks = 10
-     )
+# With R base
+hist(ieap2025$Weight,
+     main = "Histogram of the Weight of the students",
+     xlab = "Weight (kg)",
+     col = "lightblue",
+     border = "black",
+     breaks = 10)  # nombre de classes
+
+```
+```{r}
+# With ggplot2
+library(ggplot2)
+
+ggplot(ieap2025, aes(x = Weight)) +
+  geom_histogram(binwidth = 2, fill = "lightblue", color = "black") +
+  labs(title = "Histogram of Weight",
+       x = "Weight (kg)",
+       y = "Count") +
+  theme_minimal()
+
+```
+```{r}
+# With R base
+ggplot(ieap2025, aes(x = Weight)) +
+  geom_density(fill = "lightgreen", alpha = 0.5) +
+  labs(title = "Density Plot of Weight",
+       x = "Weight (kg)",
+       y = "Density") +
+  theme_minimal()
+
+```
+```{r}
+# With ggplot2
+ggplot(ieap2025, aes(x = Weight, fill = Gender)) +
+  geom_density(alpha = 0.5) +
+  labs(title = "Density of Weight by Gender",
+       x = "Weight (kg)",
+       y = "Density") +
+  theme_minimal() +
+  scale_fill_manual(values = c("M" = "blue", "F" = "pink"))
+
+```
+```{r}
+# With R base
+boxplot(ieap2025$Weight,
+        main = "Boxplot of Weight",
+        ylab = "Weight (kg)",
+        col = "orange",
+        border = "black")
+
+```
+```{r}
+# With ggplot2
+ggplot(ieap2025, aes(y = Weight)) +
+  geom_boxplot(fill = "orange", color = "black") +
+  labs(title = "Boxplot of Weight",
+       y = "Weight (kg)") +
+  theme_minimal()
+
+```
+```{r}
+ggplot(ieap2025, aes(x = Gender, y = Weight, fill = Gender)) +
+  geom_boxplot() +
+  labs(title = "Boxplot of Weight by Gender",
+       x = "Gender",
+       y = "Weight (kg)") +
+  scale_fill_manual(values = c("M" = "blue", "F" = "pink")) +
+  theme_minimal()
+
 ```
 
 # Make a boxplot of the Weight of the students
